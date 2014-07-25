@@ -84,7 +84,7 @@ void GamePlayLayer::LayoutUnit()
     log("%s\n", Director::getInstance() -> getTextureCache()->getCachedTextureInfo().c_str());
     log("%s\n", SpriteFrameCache::getInstance()->getCachedSpriteFrameInfo().c_str());
     
-    log("branch1");
+    log("branch2");
 
 }
 
