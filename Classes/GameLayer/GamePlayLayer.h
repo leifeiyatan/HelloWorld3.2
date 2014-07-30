@@ -20,6 +20,7 @@ using namespace ui;
 using namespace cocostudio;
 using namespace cocostudio::timeline;
 
+class LivingUnit;
 
 class GamePlayLayer : public Layer
 {
@@ -31,6 +32,8 @@ public:
     void update(float delta);
     
     void LayoutUnit();
+    
+    void Attacks( LivingUnit* AttUnit, LivingUnit* UAttUnit );
     
     bool onTouchBegan(Touch* touch, Event* event);
     void onTouchEnded(Touch* touch, Event* event);

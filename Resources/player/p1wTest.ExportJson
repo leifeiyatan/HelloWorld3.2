@@ -9,7 +9,7 @@
         {
           "name": "Layer8",
           "parent": "",
-          "dI": 0,
+          "dI": -1,
           "x": 5.0,
           "y": 41.0,
           "z": 8,
@@ -166,7 +166,7 @@
         {
           "name": "Layer7",
           "parent": "",
-          "dI": -1,
+          "dI": 0,
           "x": 5.0,
           "y": 41.0,
           "z": 7,
@@ -1294,6 +1294,7 @@
                   "fi": 0,
                   "twE": 0,
                   "tweenFrame": true,
+                  "evt": "FrameEvent1",
                   "bd_src": 770,
                   "bd_dst": 771
                 },
@@ -1476,6 +1477,7 @@
                   "fi": 0,
                   "twE": 0,
                   "tweenFrame": true,
+                  "evt": "FrameEvent2",
                   "bd_src": 770,
                   "bd_dst": 771
                 },
@@ -1658,6 +1660,7 @@
                   "fi": 0,
                   "twE": 0,
                   "tweenFrame": true,
+                  "evt": "FrameEvent3",
                   "bd_src": 770,
                   "bd_dst": 771
                 },
@@ -1840,6 +1843,7 @@
                   "fi": 0,
                   "twE": 0,
                   "tweenFrame": true,
+                  "evt": "FrameEvent4",
                   "bd_src": 770,
                   "bd_dst": 771
                 },
@@ -2022,6 +2026,7 @@
                   "fi": 0,
                   "twE": 0,
                   "tweenFrame": true,
+                  "evt": "FrameEvent5",
                   "bd_src": 770,
                   "bd_dst": 771
                 },
@@ -2204,6 +2209,7 @@
                   "fi": 0,
                   "twE": 0,
                   "tweenFrame": true,
+                  "evt": "FrameEvent6",
                   "bd_src": 770,
                   "bd_dst": 771
                 },
@@ -2386,6 +2392,7 @@
                   "fi": 0,
                   "twE": 0,
                   "tweenFrame": true,
+                  "evt": "FrameEvent7",
                   "bd_src": 770,
                   "bd_dst": 771
                 },
@@ -2568,6 +2575,7 @@
                   "fi": 0,
                   "twE": 0,
                   "tweenFrame": true,
+                  "evt": "FrameEvent8",
                   "bd_src": 770,
                   "bd_dst": 771
                 },
