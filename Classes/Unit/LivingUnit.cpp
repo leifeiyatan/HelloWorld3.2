@@ -8,12 +8,16 @@
 
 #include "LivingUnit.h"
 
-LivingUnit::LivingUnit( State sta, Direction dic )
-:m_sState(sta)
-,m_dDirection( dic )
+LivingUnit::LivingUnit( LivingData* data )
+:m_sState( State::Unit_State_Stand )
+,m_dDirection( Direction::Unit_Direction_DOWN )
 ,m_pArmature( nullptr )
+,m_pTargetUnit( nullptr )
+,m_pSrcUnit( nullptr )
+,AttackCallBackFun( nullptr )
+,m_pCurLivingData( data )
 {
-    
+
 }
 
 LivingUnit::~LivingUnit()
@@ -21,9 +25,9 @@ LivingUnit::~LivingUnit()
     
 }
 
-LivingUnit* LivingUnit::createByDirection( State sta, Direction dic )
+LivingUnit* LivingUnit::create( LivingData* data )
 {
-    LivingUnit* unit = new LivingUnit( sta,dic );
+    LivingUnit* unit = new LivingUnit( data );
     if( unit && unit -> init() )
     {
         unit -> autorelease();
@@ -41,7 +45,7 @@ bool LivingUnit::init()
 {
     bool bRet = Unit::init();
     
-    playWalk();
+    stand();
     
     return bRet;
 }
@@ -85,10 +89,18 @@ Direction LivingUnit::JudgeDirection(Point startPos, Point EndPos)
     
     Direction dir = (Direction)DiractionIndex;
 
-    log("LivingUnit Move: startPos(%f,%f) -> EndPos(%f,%f) angle = %d\n Direction = %d",
-        startPos.x,startPos.y,EndPos.x,EndPos.y,angle,DiractionIndex);
+    log("LivingUnit-ID %d Move: startPos(%f,%f) -> EndPos(%f,%f) angle = %d\n Direction = %d",
+        m_pCurLivingData -> getLivingID(),startPos.x,startPos.y,EndPos.x,EndPos.y,angle,DiractionIndex);
     
     return dir;
+}
+
+void LivingUnit::stand()
+{
+    playStandAnim();
+    setState( State::Unit_State_Stand );
+    
+    log( "LivingUnit-ID %d stand",m_pCurLivingData -> getLivingID() );
 }
 
 void LivingUnit::move()
@@ -97,29 +109,64 @@ void LivingUnit::move()
     setDirection( dir );
  
     stopAllActions();
+    float duration = m_pNextPos.distance( getPosition() ) / ( 22.36f * m_pCurLivingData -> getSpeed() );
     
-    MoveTo* MoveAction = MoveTo::create(2, m_pNextPos);
-    runAction( MoveAction );
+    MoveTo* MoveAction = MoveTo::create( duration, m_pNextPos );
+    CallFunc* moveCallback = CallFunc::create(CC_CALLBACK_0(LivingUnit::moveStop,this));
     
+    Sequence* MoveSeq = Sequence::create(MoveAction, moveCallback, NULL);
     
-    playWalk();
+    runAction( MoveSeq );
+    
+    playWalkAnim();
     
     setState( State::Unit_State_Walk );
+    
+    log( "LivingUnit-ID %d moveing... LivingUnit Move duration = %d",m_pCurLivingData -> getLivingID(),(int)duration );
 }
 
 void LivingUnit::moveStop()
 {
-    playStand();
+    stand();
     
-    setState( State::Unit_State_Stand );
+    log( "LivingUnit-ID %d move stop",m_pCurLivingData -> getLivingID() );
 }
 
-void LivingUnit::playStand()
+void LivingUnit::attack( LivingUnit* Targetunit  )
 {
+    Direction dir = JudgeDirection( getPosition(),m_pNextPos );
+    setDirection( dir );
     
+    setTargetUnit( Targetunit );
+    
+    playAttackAnim();
+    
+    setState( State::Unit_State_Attack );
+    
+    log( "LivingUnit-ID %d attack!",m_pCurLivingData -> getLivingID() );
 }
 
-void LivingUnit::playWalk()
+void LivingUnit::hurt( int DamageValue /*LivingUnit* Srcunit*/ )
+{
+    Direction dir = JudgeDirection( getPosition(),m_pNextPos );
+    setDirection( dir );
+    
+    //setSrcUnit( Srcunit );
+    m_pCurLivingData -> setCurHP( m_pCurLivingData -> getCurHP() - DamageValue );
+    
+    playHurtAnim();
+    
+    setState( State::Unit_State_hurt );
+    
+    log( "LivingUnit-ID %d hurt Damage Valua = %d",m_pCurLivingData -> getLivingID(),DamageValue );
+}
+
+void LivingUnit::playStandAnim()
+{
+    log( "play LivingUnit-ID %d AnimName ---- %s",m_pCurLivingData -> getLivingID(),"stand" );
+}
+
+void LivingUnit::playWalkAnim()
 {
     //加载ccs动画文件
     if( nullptr == m_pArmature )
@@ -133,6 +180,91 @@ void LivingUnit::playWalk()
     
     char animch[32];
     sprintf( animch,"walk%d", m_dDirection );
-    m_pArmature->getAnimation()->play( animch );
+    
+    std::string MovementID =  m_pArmature -> getAnimation() -> getCurrentMovementID();
+    
+    if( strcmp(MovementID.c_str(), animch) != 0 )
+    {
+        m_pArmature->getAnimation()->play( animch );
+        log( "play LivingUnit-ID %d AnimName ---- %s",m_pCurLivingData -> getLivingID(), animch );
+    }
     
 }
+void LivingUnit::playAttackAnim()
+{
+    //加载ccs动画文件
+    if( nullptr == m_pArmature )
+    {
+        m_pArmature = Armature::create("p1wTest");
+        m_pArmature->setScale( 2 );
+        addChild(m_pArmature);
+    }
+    
+    m_pArmature->getAnimation()->setMovementEventCallFunc(std::bind(&LivingUnit::AnimCallBack,this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+    //Armature *armature, MovementEventType movementType, const std::string& movementID
+    m_pArmature->getAnimation()->setFrameEventCallFunc(std::bind(&LivingUnit::AttackFrameEvent,this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
+    
+    //播放第一个动画
+    //armature->getAnimation()->playWithIndex(0);
+    
+    char animch[32];
+    sprintf( animch,"walk%d", m_dDirection );
+    
+    std::string MovementID =  m_pArmature -> getAnimation() -> getCurrentMovementID();
+    
+    if( strcmp(MovementID.c_str(), animch) != 0 )
+    {
+        m_pArmature->getAnimation()->play( animch,-1,0 );
+        log( "play LivingUnit-ID %d AnimName ---- %s",m_pCurLivingData -> getLivingID(),animch );
+    }
+    
+}
+
+void LivingUnit::playHurtAnim()
+{
+    //加载ccs动画文件
+    if( nullptr == m_pArmature )
+    {
+        m_pArmature = Armature::create("p1wTest");
+        m_pArmature->setScale( 2 );
+        addChild(m_pArmature);
+    }
+    
+    m_pArmature->getAnimation()->setMovementEventCallFunc(std::bind(&LivingUnit::AnimCallBack,this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+    
+    //播放第一个动画
+    //armature->getAnimation()->playWithIndex(0);
+    
+    char animch[32];
+    sprintf( animch,"walk%d", m_dDirection );
+    
+    std::string MovementID =  m_pArmature -> getAnimation() -> getCurrentMovementID();
+    
+    if( strcmp(MovementID.c_str(), animch) != 0 )
+    {
+        m_pArmature->getAnimation()->play( animch,-1,0 );
+        log( "play LivingUnit-ID %d AnimName ---- %s",m_pCurLivingData -> getLivingID(),"Hert" );
+    }
+}
+
+void LivingUnit::AttackFrameEvent( Bone *bone, const std::string& frameEventName, int originFrameIndex, int currentFrameIndex )
+{
+    CCLOG("(%s) emit a frame event (%s) at frame index (%d).", bone->getName().c_str(), frameEventName.c_str(), currentFrameIndex);
+    
+    AttackCallBackFun( this,getTargetUnit() );
+    //m_pTargetUnit -> hurt( this );
+}
+
+
+void LivingUnit::AnimCallBack(Armature *armature, MovementEventType movementType, const std::string& movementID)
+{
+    if( movementType != LOOP_COMPLETE )
+    {
+        CCLOG("AnimName = %s, EventType = %d", movementID.c_str(), (int)movementType);
+    }
+    if( movementType == COMPLETE )
+    {
+        stand();
+    }
+}
+

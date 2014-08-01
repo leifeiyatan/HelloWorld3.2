@@ -20,6 +20,9 @@ using namespace ui;
 using namespace cocostudio;
 using namespace cocostudio::timeline;
 
+class Unit;
+class LivingUnit;
+class MapNode;
 
 class GamePlayLayer : public Layer
 {
@@ -30,11 +33,17 @@ public:
     virtual bool init();
     void update(float delta);
     
+    void LayoutMap();
     void LayoutUnit();
+    void addUnitForMap( Unit* unit,Vec2 tileCoord );
+    
+    void Attacks( LivingUnit* AttUnit, LivingUnit* UAttUnit );
     
     bool onTouchBegan(Touch* touch, Event* event);
     void onTouchEnded(Touch* touch, Event* event);
     
+    
+    MapNode* m_pMapNode;
     CREATE_FUNC( GamePlayLayer );
     
     //void menuCloseCallback(Ref* pSender);

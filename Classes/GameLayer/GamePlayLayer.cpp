@@ -9,6 +9,7 @@
 #include "GamePlayLayer.h"
 #include "LivingUnit.h"
 #include "UnitMgr.h"
+#include "MapNode.h"
 GamePlayLayer::GamePlayLayer()
 {
 }
@@ -28,6 +29,9 @@ GamePlayLayer::~GamePlayLayer()
 
 bool GamePlayLayer::init()
 {
+    //地图布局
+    LayoutMap();
+    
     //单位布局
     LayoutUnit();
     
@@ -44,7 +48,16 @@ bool GamePlayLayer::init()
 
 void GamePlayLayer::update(float delta)
 {
-    
+
+}
+
+void GamePlayLayer::LayoutMap()
+{
+    Size visSize = Director::getInstance() -> getVisibleSize();
+    m_pMapNode = MapNode::create();
+    //m_pMapNode -> setPosition( Vec2( - 100, -100 ) );
+    m_pMapNode -> setPosition( Point( visSize.width / 2,visSize.height / 2 ) );
+    addChild( m_pMapNode );
 }
 
 void GamePlayLayer::LayoutUnit()
@@ -58,48 +71,73 @@ void GamePlayLayer::LayoutUnit()
     pla -> setPosition( Point(480,320) );
     addChild( pla );
     
-    LivingUnit* unit = LivingUnit::createByDirection( State::Unit_State_Walk, Direction::Unit_Direction_LEFTUP );
-    unit -> setPosition( Point (0,0) );
+    LivingData* data = new LivingData();
+    data -> setLivingID( 1 );
+    data -> setSpeed( 5 );
+    data -> setAttackValue( 10 );
+    
+    LivingUnit* unit = LivingUnit::create( data );
     unit -> setTag( 10 );
     unit -> setUnitType( UnitType_Player );
-    addChild( unit );
+    unit -> AttackCallBackFun = std::bind(&GamePlayLayer::Attacks, this, std::placeholders::_1,std::placeholders::_2);
+    unit -> playWalkAnim();
+    addUnitForMap( unit,Vec2(12,12) );
     
-    LivingUnit* unit2 = LivingUnit::createByDirection( State::Unit_State_Walk, Direction::Unit_Direction_LEFTUP );
-    unit2 -> setPosition( Point (480,320) );
-    unit2 -> setTag( 20 );
-    unit2 -> setUnitType( UnitType_NPC );
-    addChild( unit2 );
     
-    LivingUnit* unit3 = LivingUnit::createByDirection( State::Unit_State_Walk, Direction::Unit_Direction_LEFTUP );
-    unit3 -> setPosition( Point (800,600) );
-    unit3 -> setTag( 30 );
-    unit3 -> setUnitType( UnitType_NPC );
-    addChild( unit3 );
     
-    UnitMgr::getUnitMgr() -> addUnit( unit );
-    UnitMgr::getUnitMgr() -> addUnit( unit2 );
-    UnitMgr::getUnitMgr() -> addUnit( unit3 );
+    
+    
+//    LivingData* data2 = new LivingData();
+//    data2 -> setLivingID( 2 );
+//    data2 -> setSpeed( 5 );
+//    
+//    LivingUnit* unit2 = LivingUnit::create( data2 );
+//    unit2 -> setPosition( Point (600,320) );
+//    unit2 -> setTag( 20 );
+//    unit2 -> setUnitType( UnitType_NPC );
+//    addChild( unit2 );
+//
+//    LivingUnit* unit3 = LivingUnit::create( data );
+//    unit3 -> setPosition( Point (800,600) );
+//    unit3 -> setTag( 30 );
+//    unit3 -> setUnitType( UnitType_NPC );
+//    addChild( unit3 );
+    
+    
+//    UnitMgr::getUnitMgr() -> addUnit( unit2 );
+//    UnitMgr::getUnitMgr() -> addUnit( unit3 );
     
 
     log("%s\n", Director::getInstance() -> getTextureCache()->getCachedTextureInfo().c_str());
     log("%s\n", SpriteFrameCache::getInstance()->getCachedSpriteFrameInfo().c_str());
-    
-    log("branch1");
 
 }
 
-//void GamePlayLayer::menuCloseCallback(Ref* pSender)
-//{
-//
-//}
+void GamePlayLayer::addUnitForMap( Unit* unit,Vec2 tileCoord )
+{
+    Point unitPos = m_pMapNode -> MapCoordiConvertPos( tileCoord );
+    unit -> setPosition( unitPos );
+    m_pMapNode -> addChild( unit );
+    UnitMgr::getUnitMgr() -> addUnit( unit );
+}
 
+void GamePlayLayer::Attacks( LivingUnit* AttUnit, LivingUnit* UAttUnit )
+{
+    int DamageValue = AttUnit -> getCurLivingData() -> getAttackValue();
+    UAttUnit -> hurt( DamageValue );
+}
 
 bool GamePlayLayer::onTouchBegan(Touch* touch, Event* event)
 {
     Point touchPos = touch -> getLocation();
-    LivingUnit* unit = static_cast<LivingUnit*>( UnitMgr::getUnitMgr() -> getUnitByTypeAndID(UnitType_Player, 10) );
-    unit -> setNextPos( touchPos );
-    unit -> move();
+//    LivingUnit* unit = static_cast<LivingUnit*>( UnitMgr::getUnitMgr() -> getUnitByTypeAndID(UnitType_Player, 10) );
+//    unit -> setNextPos( touchPos );
+//    unit -> move();
+    //unit -> attack( (LivingUnit*)getChildByTag(20) );
+    
+    //Point MapPos = m_pMapNode -> convertToNodeSpace( touchPos );
+    //MapPos = m_pMapNode -> convertToMapSpace( MapPos );
+    Point MapPos = m_pMapNode -> PosConvertMapCoodi( touchPos );
     return true;
 }
 
