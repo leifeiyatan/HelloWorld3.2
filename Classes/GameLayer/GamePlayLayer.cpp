@@ -82,33 +82,28 @@ void GamePlayLayer::LayoutUnit()
     pla -> setPosition( Vec2(800,800) );
     m_pMapNode -> addChild( pla );
     
-<<<<<<< HEAD
-=======
-    
->>>>>>> branch1
     LivingData* data = new LivingData();
     data -> setLivingID( 1 );
     data -> setSpeed( 5 );
     data -> setAttackValue( 10 );
     
     LivingUnit* unit = LivingUnit::create( data );
-<<<<<<< HEAD
     unit -> setPosition( Point (480,320) );
     unit -> setTag( 10 );
     unit -> setUnitType( UnitType_Player );
     unit -> AttackCallBackFun = std::bind(&GamePlayLayer::Attacks, this, std::placeholders::_1,std::placeholders::_2);
-    addChild( unit );
-    
-    
-    LivingData* data2 = new LivingData();
-    data2 -> setLivingID( 2 );
-    data2 -> setSpeed( 5 );
-    
-    LivingUnit* unit2 = LivingUnit::create( data2 );
-    unit2 -> setPosition( Point (600,320) );
-    unit2 -> setTag( 20 );
-    unit2 -> setUnitType( UnitType_NPC );
-    addChild( unit2 );
+//    addChild( unit );
+//    
+//    
+//    LivingData* data2 = new LivingData();
+//    data2 -> setLivingID( 2 );
+//    data2 -> setSpeed( 5 );
+//    
+//    LivingUnit* unit2 = LivingUnit::create( data2 );
+//    unit2 -> setPosition( Point (600,320) );
+//    unit2 -> setTag( 20 );
+//    unit2 -> setUnitType( UnitType_NPC );
+//    addChild( unit2 );
 //
 //    LivingUnit* unit3 = LivingUnit::create( data );
 //    unit3 -> setPosition( Point (800,600) );
@@ -116,9 +111,9 @@ void GamePlayLayer::LayoutUnit()
 //    unit3 -> setUnitType( UnitType_NPC );
 //    addChild( unit3 );
     
-    UnitMgr::getUnitMgr() -> addUnit( unit );
-    UnitMgr::getUnitMgr() -> addUnit( unit2 );
-=======
+//    UnitMgr::getUnitMgr() -> addUnit( unit );
+//    UnitMgr::getUnitMgr() -> addUnit( unit2 );
+
     unit -> setTag( 10 );
     unit -> setUnitType( UnitType_Player );
     unit -> AttackCallBackFun = std::bind(&GamePlayLayer::Attacks, this, std::placeholders::_1,std::placeholders::_2);
@@ -149,7 +144,7 @@ void GamePlayLayer::LayoutUnit()
     
     
 //    UnitMgr::getUnitMgr() -> addUnit( unit2 );
->>>>>>> branch1
+
 //    UnitMgr::getUnitMgr() -> addUnit( unit3 );
     
 
@@ -176,10 +171,6 @@ bool GamePlayLayer::onTouchBegan(Touch* touch, Event* event)
 {
     Point touchPos = touch -> getLocation();
     LivingUnit* unit = static_cast<LivingUnit*>( UnitMgr::getUnitMgr() -> getUnitByTypeAndID(UnitType_Player, 10) );
-<<<<<<< HEAD
-    unit -> setNextPos( touchPos );
-    unit -> attack( (LivingUnit*)getChildByTag(20) );
-=======
     
     Point MapPos = m_pMapNode -> PosConvertMapCoodi( touchPos );
     unit -> setNextPos( m_pMapNode -> MapCoordiConvertPos( MapPos ) );
@@ -187,7 +178,7 @@ bool GamePlayLayer::onTouchBegan(Touch* touch, Event* event)
     //unit -> attack( (LivingUnit*)getChildByTag(20) );
     
     
->>>>>>> branch1
+
     return true;
 }
 

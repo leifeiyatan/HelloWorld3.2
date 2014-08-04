@@ -20,13 +20,10 @@ using namespace ui;
 using namespace cocostudio;
 using namespace cocostudio::timeline;
 
-<<<<<<< HEAD
-class LivingUnit;
-=======
+
 class Unit;
 class LivingUnit;
 class MapNode;
->>>>>>> branch1
 
 class GamePlayLayer : public Layer
 {
@@ -40,8 +37,6 @@ public:
     void LayoutMap();
     void LayoutUnit();
     void addUnitForMap( Unit* unit,Vec2 tileCoord );
-    
-    void Attacks( LivingUnit* AttUnit, LivingUnit* UAttUnit );
     
     void Attacks( LivingUnit* AttUnit, LivingUnit* UAttUnit );
     

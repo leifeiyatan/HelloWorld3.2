@@ -122,22 +122,16 @@ void LivingUnit::move()
     
     setState( State::Unit_State_Walk );
     
-<<<<<<< HEAD
-    log( "LivingUnit-ID %d moveing... LivingUnit Move duration = %d",m_pCurLivingData -> getLivingID(),(int)duration );
-=======
+
     //log( "LivingUnit-ID %d moveing... LivingUnit Move duration = %d",m_pCurLivingData -> getLivingID(),(int)duration );
->>>>>>> branch1
+
 }
 
 void LivingUnit::moveStop()
 {
     stand();
     
-<<<<<<< HEAD
-    log( "LivingUnit-ID %d move stop",m_pCurLivingData -> getLivingID() );
-=======
     //log( "LivingUnit-ID %d move stop",m_pCurLivingData -> getLivingID() );
->>>>>>> branch1
 }
 
 void LivingUnit::attack( LivingUnit* Targetunit  )
@@ -151,11 +145,8 @@ void LivingUnit::attack( LivingUnit* Targetunit  )
     
     setState( State::Unit_State_Attack );
     
-<<<<<<< HEAD
-    log( "LivingUnit-ID %d attack!",m_pCurLivingData -> getLivingID() );
-=======
     //log( "LivingUnit-ID %d attack!",m_pCurLivingData -> getLivingID() );
->>>>>>> branch1
+
 }
 
 void LivingUnit::hurt( int DamageValue /*LivingUnit* Srcunit*/ )
@@ -170,20 +161,14 @@ void LivingUnit::hurt( int DamageValue /*LivingUnit* Srcunit*/ )
     
     setState( State::Unit_State_hurt );
     
-<<<<<<< HEAD
-    log( "LivingUnit-ID %d hurt Damage Valua = %d",m_pCurLivingData -> getLivingID(),DamageValue );
-=======
     //log( "LivingUnit-ID %d hurt Damage Valua = %d",m_pCurLivingData -> getLivingID(),DamageValue );
->>>>>>> branch1
+
 }
 
 void LivingUnit::playStandAnim()
 {
-<<<<<<< HEAD
-    log( "play LivingUnit-ID %d AnimName ---- %s",m_pCurLivingData -> getLivingID(),"stand" );
-=======
     //log( "play LivingUnit-ID %d AnimName ---- %s",m_pCurLivingData -> getLivingID(),"stand" );
->>>>>>> branch1
+
 }
 
 void LivingUnit::playWalkAnim()
@@ -206,11 +191,8 @@ void LivingUnit::playWalkAnim()
     if( strcmp(MovementID.c_str(), animch) != 0 )
     {
         m_pArmature->getAnimation()->play( animch );
-<<<<<<< HEAD
-        log( "play LivingUnit-ID %d AnimName ---- %s",m_pCurLivingData -> getLivingID(), animch );
-=======
+        
         //log( "play LivingUnit-ID %d AnimName ---- %s",m_pCurLivingData -> getLivingID(), animch );
->>>>>>> branch1
     }
     
 }
@@ -239,11 +221,8 @@ void LivingUnit::playAttackAnim()
     if( strcmp(MovementID.c_str(), animch) != 0 )
     {
         m_pArmature->getAnimation()->play( animch,-1,0 );
-<<<<<<< HEAD
-        log( "play LivingUnit-ID %d AnimName ---- %s",m_pCurLivingData -> getLivingID(),animch );
-=======
+
         //log( "play LivingUnit-ID %d AnimName ---- %s",m_pCurLivingData -> getLivingID(),animch );
->>>>>>> branch1
     }
     
 }
@@ -271,11 +250,8 @@ void LivingUnit::playHurtAnim()
     if( strcmp(MovementID.c_str(), animch) != 0 )
     {
         m_pArmature->getAnimation()->play( animch,-1,0 );
-<<<<<<< HEAD
-        log( "play LivingUnit-ID %d AnimName ---- %s",m_pCurLivingData -> getLivingID(),"Hert" );
-=======
+
         //log( "play LivingUnit-ID %d AnimName ---- %s",m_pCurLivingData -> getLivingID(),"Hert" );
->>>>>>> branch1
     }
 }
 
