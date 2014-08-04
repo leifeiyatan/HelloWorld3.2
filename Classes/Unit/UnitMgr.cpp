@@ -16,7 +16,7 @@ UnitMgr::UnitMgr()
     
 }
 
-UnitMgr* UnitMgr::getUnitMgr()
+UnitMgr* UnitMgr::getInterface()
 {
     if (!s_SharedUnitMgr)
     {

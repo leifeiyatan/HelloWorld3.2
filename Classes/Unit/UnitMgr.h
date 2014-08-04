@@ -32,7 +32,7 @@ public:
     
     Map<ID_key, Unit*>* getUnitsByType( _UnitType type );
     Unit* getUnitByTypeAndID( _UnitType type, int ID );
-    static UnitMgr* getUnitMgr();
+    static UnitMgr* getInterface();
     static void purgeUnitMgr();
 private:
     UnitMgr();

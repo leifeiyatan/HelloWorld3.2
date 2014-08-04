@@ -16,7 +16,7 @@ GamePlayLayer::GamePlayLayer()
 
 GamePlayLayer::~GamePlayLayer()
 {
-    UnitMgr::getUnitMgr() -> clearUnitsAll();
+    UnitMgr::getInterface() -> clearUnitsAll();
     
     ArmatureDataManager::getInstance()->removeArmatureFileInfo("p1wTest.ExportJson");
     SpriteFrameCache::getInstance()->removeSpriteFramesFromFile("p1w.plist");
@@ -48,7 +48,10 @@ bool GamePlayLayer::init()
 
 void GamePlayLayer::update(float delta)
 {
-
+    Unit* player = UnitMgr::getInterface() -> getUnitByTypeAndID(UnitType_Player, 10);
+    
+    Vec2 tmp_pos = m_pMapNode -> convertToWorldSpace( player -> getPosition() );
+    m_pMapNode -> MapMove( tmp_pos );
 }
 
 void GamePlayLayer::LayoutMap()
@@ -58,7 +61,7 @@ void GamePlayLayer::LayoutMap()
     auto str = String::createWithContentsOfFile(FileUtils::getInstance()->fullPathForFilename("isometric_grass_and_water.tmx"));
     m_pMapNode = MapNode::createWithXML(str->getCString(),"");
     m_pMapNode -> setAnchorPoint( Point(0.5f,0.5f) );
-    //m_pMapNode -> setScale( 3 );
+    m_pMapNode -> setScale( 2 );
     m_pMapNode -> setPosition( Point( visSize.width / 2,visSize.height / 2 - 500) );
     addChild( m_pMapNode );
     
@@ -158,7 +161,7 @@ void GamePlayLayer::addUnitForMap( Unit* unit,Vec2 tileCoord )
     Point unitPos = m_pMapNode -> MapCoordiConvertPos( tileCoord );
     unit -> setPosition( unitPos );
     m_pMapNode -> addChild( unit );
-    UnitMgr::getUnitMgr() -> addUnit( unit );
+    UnitMgr::getInterface() -> addUnit( unit );
 }
 
 void GamePlayLayer::Attacks( LivingUnit* AttUnit, LivingUnit* UAttUnit )
@@ -170,7 +173,7 @@ void GamePlayLayer::Attacks( LivingUnit* AttUnit, LivingUnit* UAttUnit )
 bool GamePlayLayer::onTouchBegan(Touch* touch, Event* event)
 {
     Point touchPos = touch -> getLocation();
-    LivingUnit* unit = static_cast<LivingUnit*>( UnitMgr::getUnitMgr() -> getUnitByTypeAndID(UnitType_Player, 10) );
+    LivingUnit* unit = static_cast<LivingUnit*>( UnitMgr::getInterface() -> getUnitByTypeAndID(UnitType_Player, 10) );
     
     Point MapPos = m_pMapNode -> PosConvertMapCoodi( touchPos );
     unit -> setNextPos( m_pMapNode -> MapCoordiConvertPos( MapPos ) );

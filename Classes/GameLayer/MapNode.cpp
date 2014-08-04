@@ -11,6 +11,7 @@
 
 
 MapNode::MapNode()
+:m_rcMapMoveLimit(Rect::ZERO)
 {
     
 }
@@ -20,16 +21,12 @@ MapNode::~MapNode()
     
 }
 
-bool MapNode::init()
-{
-    return true;
-}
-
 MapNode* MapNode::createWithXML(const std::string& tmxString, const std::string& resourcePath)
 {
     MapNode *ret = new MapNode();
     if (ret->initWithXML(tmxString, resourcePath))
     {
+        ret->init();
         ret->autorelease();
         return ret;
     }
@@ -37,6 +34,21 @@ MapNode* MapNode::createWithXML(const std::string& tmxString, const std::string&
     return nullptr;
 }
 
+
+bool MapNode::init()
+{
+    initMapMoveLimit();
+    return true;
+}
+
+void MapNode::initMapMoveLimit()
+{
+    Size visSize = Director::getInstance() -> getVisibleSize();
+    m_rcMapMoveLimit.origin.x = visSize.width / 2 - visSize.width / 8;
+    m_rcMapMoveLimit.origin.y = visSize.height / 2 - visSize.height / 8;
+    m_rcMapMoveLimit.size.width = visSize.width / 4;
+    m_rcMapMoveLimit.size.height = visSize.height / 4;
+}
 
 Vec2 MapNode::MapCoordiConvertPos( Vec2 &tileCoord )
 {
@@ -143,5 +155,36 @@ void MapNode::drawDebugMesh()
     }
 //    Vec2 vec[4] = { originPos,overPos,Vec2(Contentsize.width / 2,0),Vec2( 0,Contentsize.height / 2 ) };
 //    pNode -> drawPolygon(vec, 4, Color4F::WHITE, 0.5, Color4F::WHITE);
+}
+
+void MapNode::MapMove( Vec2 &RefPos )
+{
+    //CCLOG( "curMapPos MoveBefore x = %d, y = %d", (int)getPosition().x, (int)getPosition().y );
+    
+    Vec2 tmp_CurPos = getPosition();
+    float tmp_DisPosX = 0;
+    float tmp_DisPosY = 0;
+    
+    if( RefPos.x < m_rcMapMoveLimit.getMinX() )
+    {
+        tmp_DisPosX = m_rcMapMoveLimit.getMinX() - RefPos.x;
+    }
+    else if( RefPos.x > m_rcMapMoveLimit.getMaxX() )
+    {
+        tmp_DisPosX = m_rcMapMoveLimit.getMaxX() - RefPos.x;
+    }
+    
+    if( RefPos.y < m_rcMapMoveLimit.getMinY() )
+    {
+        tmp_DisPosY = m_rcMapMoveLimit.getMinY() - RefPos.y;
+    }
+    else if( RefPos.y > m_rcMapMoveLimit.getMaxY() )
+    {
+        tmp_DisPosY = m_rcMapMoveLimit.getMaxY() - RefPos.y;
+    }
+    
+    setPosition( Vec2( tmp_CurPos.x + tmp_DisPosX,tmp_CurPos.y + tmp_DisPosY ) );
+    
+    //CCLOG( "curMapPos MoveLater x = %d, y = %d", (int)getPosition().x, (int)getPosition().y );
 }
 

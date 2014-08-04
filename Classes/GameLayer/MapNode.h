@@ -20,17 +20,22 @@ public:
     virtual ~MapNode();
     
     bool init();
+    void initMapMoveLimit();
     
     Vec2 MapCoordiConvertPos( Vec2 &tileCoord);
     Vec2 PosConvertMapCoodi( Vec2 &Pos);
     
     static MapNode* createWithXML( const std::string& tmxString, const std::string& resourcePath );
     
+    void MapMove( Vec2 &RefPos );
+    
     void drawDebugMesh();
     //FastTMXTiledMap* m_pMap;
     
     //CREATE_FUNC( MapNode );
     //cocos2d::experimental::FastTMXTiledMap* m_pMap;
+protected:
+    Rect m_rcMapMoveLimit;
 };
 
 #endif /* defined(__HelloWorld3_2__GameMapLayer__) */
