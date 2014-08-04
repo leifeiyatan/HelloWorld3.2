@@ -46,6 +46,7 @@ Vec2 MapNode::MapCoordiConvertPos( Vec2 &tileCoord )
     Vec2 pos = pLayer-> getPositionAt( tileCoord - Vec2(0, 1) );
     
     Size tileSize = getTileSize();
+    
     //tilemap偏移
     //x 位移正中间
 //    pos.x += tileSize.width / 2;
@@ -59,15 +60,15 @@ Vec2 MapNode::PosConvertMapCoodi( Vec2 &Pos )
     Size Contentsize = getContentSize();
     Size mapSize = getMapSize();
     Size tileSize = getTileSize();
-    
     float halfMapWidth = mapSize.width * 0.5f;
     float mapHeight = mapSize.height;
     float tileWidth = tileSize.width;
     float tileHeight = tileSize.height;
     
     //tilemap偏移
-    Pos.y -= tileHeight / 2;
+    Pos.y -= tileHeight / 2 * getScale();
     
+    //不会随放大缩小改变位置
     Pos = convertToNodeSpace( Pos );
     
     Point tilePosDiv = Point(Pos.x / tileWidth, Pos.y / tileHeight);

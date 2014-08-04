@@ -58,8 +58,8 @@ void GamePlayLayer::LayoutMap()
     auto str = String::createWithContentsOfFile(FileUtils::getInstance()->fullPathForFilename("isometric_grass_and_water.tmx"));
     m_pMapNode = MapNode::createWithXML(str->getCString(),"");
     m_pMapNode -> setAnchorPoint( Point(0.5f,0.5f) );
-    //m_pMapNode -> setScale( 2 );
-    m_pMapNode -> setPosition( Point( visSize.width / 2,visSize.height / 2 - 300 ) );
+    //m_pMapNode -> setScale( 3 );
+    m_pMapNode -> setPosition( Point( visSize.width / 2,visSize.height / 2 - 500) );
     addChild( m_pMapNode );
     
     m_pMapNode -> drawDebugMesh();
