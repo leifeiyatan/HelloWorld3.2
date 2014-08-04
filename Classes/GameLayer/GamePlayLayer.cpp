@@ -88,7 +88,7 @@ void GamePlayLayer::LayoutUnit()
     data -> setAttackValue( 10 );
     
     LivingUnit* unit = LivingUnit::create( data );
-    unit -> setPosition( Point (480,320) );
+//    unit -> setPosition( Point (480,320) );
     unit -> setTag( 10 );
     unit -> setUnitType( UnitType_Player );
     unit -> AttackCallBackFun = std::bind(&GamePlayLayer::Attacks, this, std::placeholders::_1,std::placeholders::_2);
@@ -118,7 +118,7 @@ void GamePlayLayer::LayoutUnit()
     unit -> setUnitType( UnitType_Player );
     unit -> AttackCallBackFun = std::bind(&GamePlayLayer::Attacks, this, std::placeholders::_1,std::placeholders::_2);
     unit -> playWalkAnim();
-    addUnitForMap( unit,Vec2(12,12) );
+    addUnitForMap( unit,Vec2(0,0) );
     
     unit -> setScale( 0.5 );
     

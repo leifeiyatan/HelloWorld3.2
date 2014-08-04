@@ -1023,7 +1023,6 @@
 		2AC795EA1862875D005EC8E1 /* BoundingBoxAttachment.h in Headers */ = {isa = PBXBuildFile; fileRef = 2AC795D418628672005EC8E1 /* BoundingBoxAttachment.h */; };
 		373B9129187891F400198F86 /* CCComBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 373B910718787C0B00198F86 /* CCComBase.h */; };
 		373B912A187891FB00198F86 /* CCComBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 373B910718787C0B00198F86 /* CCComBase.h */; };
-		3E6176681960F89B00DE83F5 /* CCController-iOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3E6176551960F89B00DE83F5 /* CCController-iOS.mm */; };
 		3E6176691960F89B00DE83F5 /* CCController.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E6176561960F89B00DE83F5 /* CCController.h */; };
 		3E6176741960F89B00DE83F5 /* CCEventController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E6176611960F89B00DE83F5 /* CCEventController.cpp */; };
 		3E6176751960F89B00DE83F5 /* CCEventController.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E6176621960F89B00DE83F5 /* CCEventController.h */; };
@@ -2357,7 +2356,6 @@
 		37936A3C1869B76800E974DD /* reader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = reader.h; sourceTree = "<group>"; };
 		37936A3D1869B76800E974DD /* stringbuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stringbuffer.h; sourceTree = "<group>"; };
 		37936A3E1869B76800E974DD /* writer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = writer.h; sourceTree = "<group>"; };
-		3E6176551960F89B00DE83F5 /* CCController-iOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "CCController-iOS.mm"; path = "../base/CCController-iOS.mm"; sourceTree = "<group>"; };
 		3E6176561960F89B00DE83F5 /* CCController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CCController.h; path = ../base/CCController.h; sourceTree = "<group>"; };
 		3E6176611960F89B00DE83F5 /* CCEventController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CCEventController.cpp; path = ../base/CCEventController.cpp; sourceTree = "<group>"; };
 		3E6176621960F89B00DE83F5 /* CCEventController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CCEventController.h; path = ../base/CCEventController.h; sourceTree = "<group>"; };
@@ -3166,7 +3164,6 @@
 			isa = PBXGroup;
 			children = (
 				3E61781C1966A5A300DE83F5 /* CCController.cpp */,
-				3E6176551960F89B00DE83F5 /* CCController-iOS.mm */,
 				3E6176561960F89B00DE83F5 /* CCController.h */,
 				3E6176611960F89B00DE83F5 /* CCEventController.cpp */,
 				3E6176621960F89B00DE83F5 /* CCEventController.h */,
@@ -6710,7 +6707,6 @@
 				1A570072180BC5A10088DEC7 /* CCActionGrid.cpp in Sources */,
 				50ABBE621925AB6F00A911A9 /* CCEventListenerAcceleration.cpp in Sources */,
 				B37510811823ACA100B3BA6A /* CCPhysicsJointInfo_chipmunk.cpp in Sources */,
-				3E6176681960F89B00DE83F5 /* CCController-iOS.mm in Sources */,
 				2905FA8D18CF08D100240AA3 /* UIWidget.cpp in Sources */,
 				29E99D1F1957BA7000046604 /* CocoLoader.cpp in Sources */,
 				B29594B51926D5EC003EEF37 /* CCMeshCommand.cpp in Sources */,

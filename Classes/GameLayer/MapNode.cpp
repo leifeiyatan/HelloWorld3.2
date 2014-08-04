@@ -43,13 +43,13 @@ Vec2 MapNode::MapCoordiConvertPos( Vec2 &tileCoord )
     FastTMXLayer* pLayer = getLayer("background");
     
     //取得的像素坐标为块坐标的 y正中间 x最左边
-    Vec2 pos = pLayer-> getPositionAt( tileCoord /*- Vec2(0.5, 0.5)*/ );
+    Vec2 pos = pLayer-> getPositionAt( tileCoord - Vec2(0, 1) );
     
     Size tileSize = getTileSize();
     //tilemap偏移
     //x 位移正中间
-    //pos.x += tileSize.width / 2;
-    //pos.y -= tileSize.height / 2;
+//    pos.x += tileSize.width / 2;
+    pos.y += tileSize.height / 2;
     return pos;
 }
 
@@ -64,6 +64,9 @@ Vec2 MapNode::PosConvertMapCoodi( Vec2 &Pos )
     float mapHeight = mapSize.height;
     float tileWidth = tileSize.width;
     float tileHeight = tileSize.height;
+    
+    //tilemap偏移
+    Pos.y -= tileHeight / 2;
     
     Pos = convertToNodeSpace( Pos );
     
