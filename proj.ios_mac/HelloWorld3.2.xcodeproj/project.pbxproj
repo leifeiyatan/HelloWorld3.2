@@ -123,6 +123,9 @@
 		BFAABC3319752D5E00DC0D80 /* NewTestFrameAni0.plist in Resources */ = {isa = PBXBuildFile; fileRef = BFAABC3019752D5E00DC0D80 /* NewTestFrameAni0.plist */; };
 		BFAABC3419752D5E00DC0D80 /* NewTestFrameAni0.png in Resources */ = {isa = PBXBuildFile; fileRef = BFAABC3119752D5E00DC0D80 /* NewTestFrameAni0.png */; };
 		BFAABC38197532EF00DC0D80 /* NewTestFrameAni.ExportJson in Resources */ = {isa = PBXBuildFile; fileRef = BFAABC37197532EF00DC0D80 /* NewTestFrameAni.ExportJson */; };
+		BFD0648D1988D47200C3A934 /* MapNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BFD0648B1988D47200C3A934 /* MapNode.cpp */; };
+		BFD064931988DD4200C3A934 /* isometric_grass_and_water.png in Resources */ = {isa = PBXBuildFile; fileRef = BFD064911988DD4200C3A934 /* isometric_grass_and_water.png */; };
+		BFD064941988DD4200C3A934 /* isometric_grass_and_water.tmx in Resources */ = {isa = PBXBuildFile; fileRef = BFD064921988DD4200C3A934 /* isometric_grass_and_water.tmx */; };
 		BFE2BF591977CA8D00B6C2F6 /* p1w.plist in Resources */ = {isa = PBXBuildFile; fileRef = BFE2BF561977CA8D00B6C2F6 /* p1w.plist */; };
 		BFE2BF5A1977CA8D00B6C2F6 /* p1w.png in Resources */ = {isa = PBXBuildFile; fileRef = BFE2BF571977CA8D00B6C2F6 /* p1w.png */; };
 		BFE2BF5B1977CA8D00B6C2F6 /* p1wTest.ExportJson in Resources */ = {isa = PBXBuildFile; fileRef = BFE2BF581977CA8D00B6C2F6 /* p1wTest.ExportJson */; };
@@ -394,6 +397,10 @@
 		BFAABC3019752D5E00DC0D80 /* NewTestFrameAni0.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = NewTestFrameAni0.plist; sourceTree = "<group>"; };
 		BFAABC3119752D5E00DC0D80 /* NewTestFrameAni0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NewTestFrameAni0.png; sourceTree = "<group>"; };
 		BFAABC37197532EF00DC0D80 /* NewTestFrameAni.ExportJson */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = NewTestFrameAni.ExportJson; sourceTree = "<group>"; };
+		BFD0648B1988D47200C3A934 /* MapNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MapNode.cpp; sourceTree = "<group>"; };
+		BFD0648C1988D47200C3A934 /* MapNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapNode.h; sourceTree = "<group>"; };
+		BFD064911988DD4200C3A934 /* isometric_grass_and_water.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = isometric_grass_and_water.png; sourceTree = "<group>"; };
+		BFD064921988DD4200C3A934 /* isometric_grass_and_water.tmx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = isometric_grass_and_water.tmx; sourceTree = "<group>"; };
 		BFE2BF561977CA8D00B6C2F6 /* p1w.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = p1w.plist; sourceTree = "<group>"; };
 		BFE2BF571977CA8D00B6C2F6 /* p1w.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = p1w.png; sourceTree = "<group>"; };
 		BFE2BF581977CA8D00B6C2F6 /* p1wTest.ExportJson */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = p1wTest.ExportJson; sourceTree = "<group>"; };
@@ -593,6 +600,7 @@
 		78C7DDAA14EBA5050085D0C2 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				BFD064901988DD4200C3A934 /* TileMap */,
 				BFE2BF551977CA8D00B6C2F6 /* player */,
 				BFAABC2E19752D5E00DC0D80 /* NewTestFrameAni */,
 				BF1EDCB91973A57C00FAFC18 /* DemoLogin */,
@@ -701,6 +709,8 @@
 				BF27302D197E155500EB1504 /* GamePlayLayer.h */,
 				BF099E31197FB9E900ADF878 /* GameUILayer.cpp */,
 				BF099E32197FB9E900ADF878 /* GameUILayer.h */,
+				BFD0648B1988D47200C3A934 /* MapNode.cpp */,
+				BFD0648C1988D47200C3A934 /* MapNode.h */,
 			);
 			name = GameLayer;
 			path = ../Classes/GameLayer;
@@ -726,6 +736,15 @@
 				BFAABC3119752D5E00DC0D80 /* NewTestFrameAni0.png */,
 			);
 			path = NewTestFrameAni;
+			sourceTree = "<group>";
+		};
+		BFD064901988DD4200C3A934 /* TileMap */ = {
+			isa = PBXGroup;
+			children = (
+				BFD064911988DD4200C3A934 /* isometric_grass_and_water.png */,
+				BFD064921988DD4200C3A934 /* isometric_grass_and_water.tmx */,
+			);
+			path = TileMap;
 			sourceTree = "<group>";
 		};
 		BFE2BF551977CA8D00B6C2F6 /* player */ = {
@@ -970,11 +989,13 @@
 				50EF629817ECD46A001EB2F8 /* Icon-80.png in Resources */,
 				BF1EDCB51973A2E000FAFC18 /* weapon.png in Resources */,
 				BF1EDCAA1973A2E000FAFC18 /* helmet2.png in Resources */,
+				BFD064931988DD4200C3A934 /* isometric_grass_and_water.png in Resources */,
 				5087E78417EB970100C73F5D /* Icon-57.png in Resources */,
 				BF1EDCAE1973A2E000FAFC18 /* SampleChangeEquip_1.json in Resources */,
 				BF1EDCCF1973A57C00FAFC18 /* close1.png in Resources */,
 				5087E77E17EB970100C73F5D /* Default.png in Resources */,
 				BF1EDC991973A2E000FAFC18 /* armour3.png in Resources */,
+				BFD064941988DD4200C3A934 /* isometric_grass_and_water.tmx in Resources */,
 				50EF629717ECD46A001EB2F8 /* Icon-58.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1006,6 +1027,7 @@
 				BF099E2B197F850C00ADF878 /* Unit.cpp in Sources */,
 				BF273025197E0DAF00EB1504 /* BaseDataMgr.cpp in Sources */,
 				BF273029197E0DAF00EB1504 /* GameSeneMgr.cpp in Sources */,
+				BFD0648D1988D47200C3A934 /* MapNode.cpp in Sources */,
 				503AE10117EB989F00D1A890 /* main.m in Sources */,
 				1AFAF8B816D35DE700DB1158 /* HelloWorldScene.cpp in Sources */,
 			);
