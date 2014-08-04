@@ -13,7 +13,7 @@
 #include "CCFastTMXLayer.h"
 using namespace cocos2d;
 
-class MapNode : public Node
+class MapNode : public FastTMXTiledMap
 {
 public:
     MapNode();
@@ -24,9 +24,12 @@ public:
     Vec2 MapCoordiConvertPos( Vec2 &tileCoord);
     Vec2 PosConvertMapCoodi( Vec2 &Pos);
     
-    FastTMXTiledMap* m_pMap;
+    static MapNode* createWithXML( const std::string& tmxString, const std::string& resourcePath );
     
-    CREATE_FUNC( MapNode );
+    void drawDebugMesh();
+    //FastTMXTiledMap* m_pMap;
+    
+    //CREATE_FUNC( MapNode );
     //cocos2d::experimental::FastTMXTiledMap* m_pMap;
 };
 

@@ -11,7 +11,6 @@
 
 
 MapNode::MapNode()
-:m_pMap( nullptr )
 {
     
 }
@@ -23,47 +22,55 @@ MapNode::~MapNode()
 
 bool MapNode::init()
 {
-    auto str = String::createWithContentsOfFile(FileUtils::getInstance()->fullPathForFilename("isometric_grass_and_water.tmx"));
-    m_pMap = FastTMXTiledMap::createWithXML(str->getCString(),"");
-    m_pMap -> setAnchorPoint( Point(0.5f,0.5f) );
-    //m_pMap -> setScale( 3 );
-
-    addChild( m_pMap );
-    
-    
     return true;
+}
+
+MapNode* MapNode::createWithXML(const std::string& tmxString, const std::string& resourcePath)
+{
+    MapNode *ret = new MapNode();
+    if (ret->initWithXML(tmxString, resourcePath))
+    {
+        ret->autorelease();
+        return ret;
+    }
+    CC_SAFE_DELETE(ret);
+    return nullptr;
 }
 
 
 Vec2 MapNode::MapCoordiConvertPos( Vec2 &tileCoord )
 {
-    FastTMXLayer* pLayer = m_pMap -> getLayer("background");
-    //pLayer->getp
-    Vec2 pos = pLayer-> getPositionAt( tileCoord );
+    FastTMXLayer* pLayer = getLayer("background");
+    
+    //取得的像素坐标为块坐标的 y正中间 x最左边
+    Vec2 pos = pLayer-> getPositionAt( tileCoord /*- Vec2(0.5, 0.5)*/ );
+    
+    Size tileSize = getTileSize();
+    //tilemap偏移
+    //x 位移正中间
+    //pos.x += tileSize.width / 2;
+    //pos.y -= tileSize.height / 2;
     return pos;
 }
 
 Vec2 MapNode::PosConvertMapCoodi( Vec2 &Pos )
 {
     // Tilemap position must be subtracted, in case the tilemap position is not at 0,0 due to scrolling
-    Size Contentsize = m_pMap -> getContentSize();
-    Size mapSize = m_pMap->getMapSize();
-    Size tileSize = m_pMap->getTileSize();
-    //tileSize.width *= m_pMap->getScale();
-    //tileSize.height *= m_pMap->getScale();
-
+    Size Contentsize = getContentSize();
+    Size mapSize = getMapSize();
+    Size tileSize = getTileSize();
+    
     float halfMapWidth = mapSize.width * 0.5f;
     float mapHeight = mapSize.height;
     float tileWidth = tileSize.width;
     float tileHeight = tileSize.height;
     
-    Pos = m_pMap -> convertToNodeSpace( Pos );
+    Pos = convertToNodeSpace( Pos );
     
     Point tilePosDiv = Point(Pos.x / tileWidth, Pos.y / tileHeight);
     
     //tilemap 坐标系相反
     float inverseTileY = mapHeight - tilePosDiv.y;
-
     
     float posX = (int)(inverseTileY + tilePosDiv.x - halfMapWidth);
     float posY = (int)(inverseTileY - tilePosDiv.x + halfMapWidth);
@@ -79,5 +86,58 @@ Vec2 MapNode::PosConvertMapCoodi( Vec2 &Pos )
     CCLOG("touch at (%.0f, %.0f) is at tileCoord (%i, %i)", Pos.x, Pos.y, (int)Coordi.x, (int)Coordi.y);
     
     return Coordi;
+}
+
+void MapNode::drawDebugMesh()
+{
+    Size Contentsize = getContentSize();
+    Size mapSize = getMapSize();
+    Size tileSize = getTileSize();
+    
+    Vec2 originPos = Vec2( Contentsize.width / 2,Contentsize.height );
+    Vec2 overPos = Vec2( Contentsize.width, Contentsize.height / 2 );
+    //tilemap偏移
+    originPos.y += tileSize.height / 2;
+    overPos.y += tileSize.height / 2;
+    
+    DrawNode* pNode = nullptr;
+    pNode = DrawNode::create();
+    addChild(pNode);
+    for( int i = 0; i < mapSize.width; i ++ )
+    {
+        
+        if ( i != 0 )
+        {
+            originPos.x -= tileSize.width / 2;
+            originPos.y -= tileSize.height / 2;
+            overPos.x -= tileSize.width / 2;
+            overPos.y -= tileSize.height / 2;
+        }
+
+        pNode -> drawSegment(originPos, overPos, 0.5, Color4F::WHITE);
+        
+    }
+    
+    originPos = Vec2( Contentsize.width / 2,Contentsize.height );
+    overPos = Vec2( 0, Contentsize.height / 2 );
+    //tilemap偏移
+    originPos.y += tileSize.height / 2;
+    overPos.y += tileSize.height / 2;
+    
+    for( int i = 0; i < mapSize.height; i ++ )
+    {
+        
+        if ( i != 0 )
+        {
+            originPos.x += tileSize.width / 2;
+            originPos.y -= tileSize.height / 2;
+            overPos.x += tileSize.width / 2;
+            overPos.y -= tileSize.height / 2;
+        }
+        
+        pNode -> drawSegment(originPos, overPos, 0.5, Color4F::WHITE);
+    }
+//    Vec2 vec[4] = { originPos,overPos,Vec2(Contentsize.width / 2,0),Vec2( 0,Contentsize.height / 2 ) };
+//    pNode -> drawPolygon(vec, 4, Color4F::WHITE, 0.5, Color4F::WHITE);
 }
 

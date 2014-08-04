@@ -54,10 +54,15 @@ void GamePlayLayer::update(float delta)
 void GamePlayLayer::LayoutMap()
 {
     Size visSize = Director::getInstance() -> getVisibleSize();
-    m_pMapNode = MapNode::create();
-    //m_pMapNode -> setPosition( Vec2( - 100, -100 ) );
-    m_pMapNode -> setPosition( Point( visSize.width / 2,visSize.height / 2 ) );
+    
+    auto str = String::createWithContentsOfFile(FileUtils::getInstance()->fullPathForFilename("isometric_grass_and_water.tmx"));
+    m_pMapNode = MapNode::createWithXML(str->getCString(),"");
+    m_pMapNode -> setAnchorPoint( Point(0.5f,0.5f) );
+    //m_pMapNode -> setScale( 2 );
+    m_pMapNode -> setPosition( Point( visSize.width / 2,visSize.height / 2 - 300 ) );
     addChild( m_pMapNode );
+    
+    m_pMapNode -> drawDebugMesh();
 }
 
 void GamePlayLayer::LayoutUnit()
@@ -67,9 +72,16 @@ void GamePlayLayer::LayoutUnit()
     //        SpriteFrameCache::getInstance()->addSpriteFramesWithFile("p1w.plist");
     //ArmatureDataManager::getInstance()->addArmatureFileInfo("p1w.png","p1w.plist","p1wTest.ExportJson" );
     
-    Label* pla = Label::createWithSystemFont("0", "Arial", 24);
-    pla -> setPosition( Point(480,320) );
-    addChild( pla );
+    Label* abc = Label::createWithSystemFont("O", "Arial", 24);
+    abc -> setPosition( Point(0,0) );
+    addChild( abc,5 );
+    
+    Label* pla = Label::createWithSystemFont("A", "Arial", 24);
+    Vec2 vec(0,0);
+    //Vec2 unitPos = m_pMapNode -> MapCoordiConvertPos( vec );
+    pla -> setPosition( Vec2(800,800) );
+    m_pMapNode -> addChild( pla );
+    
     
     LivingData* data = new LivingData();
     data -> setLivingID( 1 );
@@ -82,6 +94,8 @@ void GamePlayLayer::LayoutUnit()
     unit -> AttackCallBackFun = std::bind(&GamePlayLayer::Attacks, this, std::placeholders::_1,std::placeholders::_2);
     unit -> playWalkAnim();
     addUnitForMap( unit,Vec2(12,12) );
+    
+    unit -> setScale( 0.5 );
     
     
     
@@ -130,14 +144,14 @@ void GamePlayLayer::Attacks( LivingUnit* AttUnit, LivingUnit* UAttUnit )
 bool GamePlayLayer::onTouchBegan(Touch* touch, Event* event)
 {
     Point touchPos = touch -> getLocation();
-//    LivingUnit* unit = static_cast<LivingUnit*>( UnitMgr::getUnitMgr() -> getUnitByTypeAndID(UnitType_Player, 10) );
-//    unit -> setNextPos( touchPos );
-//    unit -> move();
+    LivingUnit* unit = static_cast<LivingUnit*>( UnitMgr::getUnitMgr() -> getUnitByTypeAndID(UnitType_Player, 10) );
+    
+    Point MapPos = m_pMapNode -> PosConvertMapCoodi( touchPos );
+    unit -> setNextPos( m_pMapNode -> MapCoordiConvertPos( MapPos ) );
+    unit -> move();
     //unit -> attack( (LivingUnit*)getChildByTag(20) );
     
-    //Point MapPos = m_pMapNode -> convertToNodeSpace( touchPos );
-    //MapPos = m_pMapNode -> convertToMapSpace( MapPos );
-    Point MapPos = m_pMapNode -> PosConvertMapCoodi( touchPos );
+    
     return true;
 }
 
